@@ -1,16 +1,21 @@
 <template>
   <div>
-      <h1>YTV Big Fun Party Mix 9</h1>
-      <article
+    <h1>YTV Big Fun Party Mix 9</h1>
+    <!-- v-for loop to put playlist on page -->
+    <!-- click function to show clicked card in PageSong area -->
+    <article
+      @click="view_song"
       v-for="song in songs"
       :id="song.tracklist"
       :key="song.tracklist"
-      >
-      <h2>Track Name: {{song.song_name}}</h2>
-      <h3>Artist: {{song.song_artist}}</h3>
-      <h4>{{timeCalculation(song.song_duration)}}</h4>
+    >
+    <!-- track light info below -->
+      <h2>Track Name: {{ song.song_name }}</h2>
+      <h3>Artist: {{ song.song_artist }}</h3>
+      <h4>{{ timeCalculation(song.song_duration) }}</h4>
+      <!-- add click event to button. Add clicked card to playlist -->
       <button @click="add_to_playlist">+</button>
-      </article>
+    </article>
   </div>
 </template>
 
@@ -18,33 +23,53 @@
 export default {
   name: "song-list",
   methods: {
+    // this function to to display song on PageSong when track is clicked
+    view_song(payload) {
+      // [payload-1] = index 
+      var view_selected_track = this.songs[payload.currentTarget.id - 1];
+      this.$root.$emit("view_track", view_selected_track);
+    },
     //   this function is to convert the song duration from seconds to m:ss
-      timeCalculation(time) {
-          var minutes = Math.floor(time /60);
-          var seconds = time - minutes * 60;
-          var timeConvert = minutes + ":" + seconds;
-          return timeConvert;
-      },
+    timeCalculation(time) {
+      var minutes = Math.floor(time / 60);
+      var seconds = time - minutes * 60;
+      var timeConvert = minutes + ":" + seconds;
+      return timeConvert;
+    },
     //   this function is to remove card and emit card id to playlist to add song
-      add_to_playlist(card) {
-        //   turn current card display to none
-          card.target.parentElement.style.display = "none";
-          var emit_data = card.target.parentElement.id;
-        //   global emit id to playlist
-          this.$root.$emit('addSong', emit_data);
-      },
-      readd_removed_song(payload) {
-          console.log(payload);
-          var removed_song = document.getElementById(payload);
-          removed_song.style.display = "grid";
+    // wasn't sure if this was the method you wanted us to go in
+    // just in case I sent objects with the PageSong component 
+    add_to_playlist(card) {
+      //   turn current card display to none by toggle hidden_card class
+      card.path[1].classList.toggle("hidden_card");
+      var emit_data = card.target.parentElement.id;
+      //   global emit id to playlist
+      this.$root.$emit("addSong", emit_data);
+    },
+    readd_removed_song(payload) {
+      // grabbed all hidden_card element
+      var removed_songs = document.getElementsByClassName("hidden_card");
+      // loop to go through array
+      for (var i = 0; i < removed_songs.length; i++) {
+        // conditional to toggle hidden_card class if payload matches id
+        if (removed_songs[i].id == payload);
+        removed_songs[i].classList.toggle("hidden_card");
+        return;
       }
+    },
   },
-  mounted () {
-      this.$root.$on('removeSong', this.readd_removed_song);
+  mounted() {
+    // global emit from PlayList for when the user click remove song from playlist
+    this.$root.$on("removeSong", this.readd_removed_song);
+
+    // payload from PlayList view_song function to use view_song function on this page
+    this.$root.$on("playlist_view_card", this.view_song_two);
   },
   data() {
     return {
       songs: [
+        // I kind of cheated and put all the song data on the 3 pages. I wouldn't do it like this
+        // in the future, because IF i had to hard code data next time, I would use vuex
         {
           song_name: "The Sweet Escape",
           song_artist: "Gwen Stefani",
@@ -183,27 +208,51 @@ Written-By – Nate Hills, Nelly Furtado, Tim Mosley*`,
 </script>
 
 <style scoped>
-article {
-    display: grid;
-    background-color: skyblue;
-    border-radius: 15px;
+* {
+  margin: 0px;
+  padding: 0px;
 }
 
+article {
+  display: grid;
+  place-items: center;
+  background-color: skyblue;
+  border-radius: 15px;
+  width: 100%;
+  height: 150px;
+  align-self: start;
+}
 
+.hidden_card {
+  display: none;
+  pointer-events: none;
+}
+
+button {
+  font-size: 20px;
+  text-align: center;
+  width: 90%;
+  border-radius: 15px;
+}
 
 div {
-    width: 400px;
-    height: 800px;
-    overflow-y: scroll;
-    font-size: .8rem;
-    display: grid;
-    row-gap: 10px;
-    padding: 0px 15px;
+  width: 400px;
+  height: 90vh;
+  overflow-y: scroll;
+  font-size: 0.8rem;
+  display: grid;
+  place-items: center;
+  grid-template-rows: 50px 150px 150px 150px 150px 150px 150px 150px 150px;
+  row-gap: 10px;
+  padding: 0px 15px;
+  grid-area: a;
 }
 
 h1 {
-    position: sticky;
-    top: 0px;
-    background-color: white;
+  position: sticky;
+  top: 0px;
+  background-color: white;
+  padding: 10px;
+  width: 100%;
 }
 </style>

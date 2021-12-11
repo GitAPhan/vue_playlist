@@ -1,152 +1,124 @@
 <template>
-    <div>
-
-    </div>
+  <div>
+    <!-- conditional: show this if all the displayed song variables are undefined -->
+    <h1
+      v-if="
+        this.displayed_song_three == undefined &&
+        this.displayed_song_two == undefined &&
+        this.displayed_song == undefined
+      "
+    >
+      Click on a track to view more
+    </h1>
+    <!-- Displayed title elsewise -->
+    <h1 v-else>Track Info</h1>
+    <!-- display this article only when displayed_song is defined -->
+    <article v-if="displayed_song != undefined">
+      <h2>
+        Track {{ displayed_song.tracklist }}:{{ displayed_song.song_name }}
+      </h2>
+      <h3>Artist: {{ displayed_song.song_artist }}</h3>
+      <h4>Album: {{ displayed_song.song_album }}</h4>
+      <h5>Time: {{ displayed_song.song_duration }}s</h5>
+      <p>{{ displayed_song.song_info }}</p>
+    </article>
+    <!-- display this article only when displayed_song_two is defined -->
+    <article v-if="displayed_song_two != undefined">
+      <h2>
+        Track {{ displayed_song_two.tracklist }}:{{
+          displayed_song_two.song_name
+        }}
+      </h2>
+      <h3>Artist: {{ displayed_song_two.song_artist }}</h3>
+      <h4>Album: {{ displayed_song_two.song_album }}</h4>
+      <h5>Time: {{ displayed_song_two.song_duration }}s</h5>
+      <p>{{ displayed_song_two.song_info }}</p>
+    </article>
+    <!-- display this article only when displayed_song_three is defined -->
+    <article v-if="displayed_song_three != undefined">
+      <h2>
+        Track {{ displayed_song_three.tracklist }}:{{
+          displayed_song_three.song_name
+        }}
+      </h2>
+      <h3>Artist: {{ displayed_song_three.song_artist }}</h3>
+      <h4>Album: {{ displayed_song_three.song_album }}</h4>
+      <h5>Time: {{ displayed_song_three.song_duration }}s</h5>
+      <p>{{ displayed_song_three.song_info }}</p>
+    </article>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'page-song',
+export default {
+  name: "page-song",
   data() {
     return {
-      songs: [
-        {
-          song_name: "The Sweet Escape",
-          song_artist: "Gwen Stefani",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Aliaune "Akon" Thiam, Giorgio Tuinfort, Gwen Stefani`,
-          song_duration: 221,
-          tracklist: 1,
-        },
-        {
-          song_name: "Stronger",
-          song_artist: "Kanye West",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Kanye West
-Written-By ["Harder, Better, Faster, Stronger" Sample] – Edwin Birdsong, Guy Manuel De Homen-Christo*, Thomas Bangalter`,
-          song_duration: 272,
-          tracklist: 2,
-        },
-        {
-          song_name: "Hey There Delilah",
-          song_artist: "Plain White T's",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Tom Higgenson`,
-          song_duration: 218,
-          tracklist: 3,
-        },
-        {
-          song_name: "One More Chance",
-          song_artist: "will-i-am",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Fernando Garibay, W. (will-i-am) Adams`,
-          song_duration: 254,
-          tracklist: 4,
-        },
-        {
-          song_name: "Because Of You",
-          song_artist: "Ne-Yo",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – M. Eriksen*, S. Smith*, T. Hermansen*`,
-          song_duration: 235,
-          tracklist: 5,
-        },
-        {
-          song_name: "He Said She Said",
-          song_artist: "Ashley Tisdale",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Evan "Kidd" Bogart*, Jonathan Rotem*, Ryan "Alias" Tedder*`,
-          song_duration: 182,
-          tracklist: 6,
-        },
-        {
-          song_name: "Ladies' Choice",
-          song_artist: "Zac Efron",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Marc Shaiman, Scott Wittman`,
-          song_duration: 141,
-          tracklist: 7,
-        },
-        {
-          song_name: "With Love",
-          song_artist: "Hilary Duff",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Hilary Duff, Julius Diaz, Kara DioGuardi, Vada Nobles`,
-          song_duration: 168,
-          tracklist: 8,
-        },
-        {
-          song_name: "Grace Kelly",
-          song_artist: "MIKA",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Dan Warner, Jodi Marr, John Merchant, MIKA (8)`,
-          song_duration: 176,
-          tracklist: 9,
-        },
-        {
-          song_name: "Say It Right (Remix)",
-          song_artist: "Nelly Furtado",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Producer – Danja, Timbaland
-Remix [Mixed By] – Dummies*
-Written-By – Nate Hills, Nelly Furtado, Tim Mosley*`,
-          song_duration: 407,
-          tracklist: 10,
-        },
-        {
-          song_name: "DJ Play My Song",
-          song_artist: "Jully Black",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Johnny "Natural" Najara*, Jully Black, Keith Harris`,
-          song_duration: 310,
-          tracklist: 11,
-        },
-        {
-          song_name: "It Makes Me Happy",
-          song_artist: "Drake Bell",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – C.J. Abraham, Drake Bell, Michael Corcoran`,
-          song_duration: 128,
-          tracklist: 12,
-        },
-        {
-          song_name: "She's So Sorry",
-          song_artist: "Hedley",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Brian Howes, Chris Crippin, Dave Rosin, Jacob Hoggard, Tom MacDonald (4)`,
-          song_duration: 206,
-          tracklist: 13,
-        },
-        {
-          song_name: "Stuck For The Summer",
-          song_artist: "Two Hours Traffic",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Two Hours Traffic`,
-          song_duration: 218,
-          tracklist: 14,
-        },
-        {
-          song_name: "Clumsy",
-          song_artist: "Fergie",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Bobby Troup, Stacy Ferguson, Will Adams`,
-          song_duration: 228,
-          tracklist: 15,
-        },
-        {
-          song_name: "Crush On You",
-          song_artist: "Nuclear Donkey",
-          song_album: "YTV Big Fun Party Mix 9",
-          song_info: `Written-By – Bobby Troup, Stacy Ferguson, Will Adams`,
-          song_duration: 239,
-          tracklist: 16,
-        },
-      ],
+      displayed_song: undefined,
+      displayed_song_two: undefined,
+      displayed_song_three: undefined,
+      // variable to determine which of the displayed_song will be updated when display_track function is called
+      display_order: 1,
     };
   },
-    }
+  methods: {
+    display_track(payload) {
+      // tried to write code to only allow a track to be displayed once.
+      // Doesn't work well when clicking the track from the playlist and songlist
+      // conditional: to run only if payload doesn't match whats already displayed
+      if (
+        this.displayed_song_three != payload &&
+        this.displayed_song_two != payload &&
+        this.displayed_song != payload
+      ) {
+        // conditional: to determine which display song variable to update according to variable display_order
+        if (this.display_order === 1) {
+          this.displayed_song = payload;
+          // increase value of display_order
+          this.display_order++;
+        } else if (this.display_order === 2) {
+          this.displayed_song_two = payload;
+          this.display_order++;
+        } else {
+          this.displayed_song_three = payload;
+          // change display_order value back to 1
+          this.display_order = 1;
+        }
+      }
+    },
+  },
+  mounted() {
+    this.$root.$on("view_track", this.display_track);
+  },
+};
 </script>
 
 <style scoped>
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+div {
+  grid-area: c;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 50px 1fr;
+  justify-items: center;
+  align-items: end;
+  overflow: hidden;
+  width: 100%;
+  height: 300px;
+  align-self: end;
+}
+article {
+  overflow: hidden;
+  padding: 10px;
+}
+
+h1 {
+  grid-column: span 3;
+  justify-self: center;
+}
 
 </style>
